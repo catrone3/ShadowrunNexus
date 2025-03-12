@@ -1,0 +1,70 @@
+{
+    "name": "ShadowrunNexus",
+    "version": "1.0.0",
+    "author": [
+        "catrone3"
+    ],
+    "url": "https://www.mediawiki.org/wiki/Skin:ShadowrunNexus",
+    "descriptionmsg": "shadowrunnexus-desc",
+    "namemsg": "skinname-shadowrunnexus",
+    "license-name": "GPL-2.0-or-later",
+    "type": "skin",
+    "requires": {
+        "MediaWiki": ">= 1.35.0"
+    },
+    "ValidSkinNames": {
+        "shadowrunnexus": {
+            "class": "SkinShadowrunNexus",
+            "args": [
+                {
+                    "name": "shadowrunnexus",
+                    "styles": [
+                        "mediawiki.skinning.interface",
+                        "skins.shadowrunnexus.styles"
+                    ],
+                    "scripts": [
+                        "skins.shadowrunnexus.js"
+                    ]
+                }
+            ]
+        }
+    },
+    "MessagesDirs": {
+        "ShadowrunNexus": [
+            "i18n"
+        ]
+    },
+    "ResourceModules": {
+        "skins.shadowrunnexus.styles": {
+            "class": "ResourceLoaderSkinModule",
+            "features": {
+                "normalize": true,
+                "elements": true,
+                "content": true,
+                "interface": true,
+                "logo": true
+            },
+            "styles": [
+                "resources/main.css"
+            ]
+        },
+        "skins.shadowrunnexus.js": {
+            "scripts": [
+                "resources/main.js"
+            ],
+            "dependencies": [
+                "mediawiki.util",
+                "jquery.makeCollapsible"
+            ]
+        }
+    },
+    "ResourceFileModulePaths": {
+        "localBasePath": "",
+        "remoteSkinPath": "ShadowrunNexus"
+    },
+    "AutoloadClasses": {
+        "SkinShadowrunNexus": "ShadowrunNexus.php",
+        "ShadowrunNexusTemplate": "ShadowrunNexus.php"
+    },
+    "manifest_version": 2
+}
