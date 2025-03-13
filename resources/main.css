@@ -1,62 +1,625 @@
 /* ShadowrunNexus - A MediaWiki skin blending cyberpunk and magical aesthetics */
 
-/* Basic styling for testing */
+/* Color Variables */
+:root {
+    --sr-primary: #0099cc;
+    /* Toned down from #00c8ff */
+    --sr-secondary: #cc0099;
+    /* Toned down from #ff00c8 */
+    --sr-background: #121212;
+    --sr-background-alt: #1e1e1e;
+    --sr-text: #e0e0e0;
+    --sr-text-muted: #a0a0a0;
+    --sr-accent: #6600cc;
+    /* Toned down from #7700ff */
+    --sr-border: #333333;
+    --sr-highlight: #cc7700;
+    /* Toned down from #ff9900 */
+    --sr-link: #66b3ff;
+    /* New softer link color */
+    --sr-link-hover: #99ccff;
+    /* New softer link hover color */
+    --sr-shadow: rgba(0, 153, 204, 0.2);
+    /* Adjusted shadow color */
+}
+
+/* Global Styles */
 body {
-    background-color: #121212 !important;
-    color: #e0e0e0 !important;
-    font-family: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.6 !important;
+    background-color: var(--sr-background);
+    color: var(--sr-text);
+    font-family: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
 }
 
 a {
-    color: #00c8ff !important;
-    text-decoration: none !important;
+    color: var(--sr-link);
+    text-decoration: none;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a:hover {
-    color: #ff9900 !important;
+    color: var(--sr-link-hover);
+    text-shadow: 0 0 3px rgba(102, 179, 255, 0.3);
 }
 
+/* Layout */
 .sr-nexus-wrapper {
-    max-width: 1400px !important;
-    margin: 0 auto !important;
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "content sidebar"
+        "footer footer";
+    grid-template-columns: 1fr 250px;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Header */
 #sr-nexus-header {
-    background-color: #1e1e1e !important;
-    border-bottom: 1px solid #333333 !important;
-    padding: 0.5rem !important;
+    grid-area: header;
+    background-color: var(--sr-background-alt);
+    border-bottom: 1px solid var(--sr-border);
+    padding: 0.5rem;
+    box-shadow: 0 0 10px var(--sr-shadow);
 }
 
-.firstHeading {
-    color: #00c8ff !important;
-    font-size: 2rem !important;
-    margin: 0 0 0.5rem 0 !important;
-    font-weight: bold !important;
+.sr-nexus-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+.sr-nexus-logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.sr-nexus-logo {
+    display: flex;
+    align-items: center;
+}
+
+.sr-nexus-logo a {
+    display: flex;
+    align-items: center;
+    color: var(--sr-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Logo styling - improved to be more visible */
+.sr-nexus-logo-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background: linear-gradient(135deg, var(--sr-primary), var(--sr-accent));
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--sr-border);
+}
+
+.sr-nexus-logo-image::before {
+    content: "SR";
+    color: var(--sr-background);
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 3;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.sr-nexus-sitename {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--sr-primary), var(--sr-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 5px var(--sr-shadow);
+}
+
+.sr-nexus-header-tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sr-nexus-search {
+    position: relative;
+}
+
+.sr-nexus-search-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--sr-border);
+    border-radius: 4px;
+    color: var(--sr-text);
+    padding: 0.5rem 1rem;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.sr-nexus-search-input:focus {
+    outline: none;
+    border-color: var(--sr-primary);
+    box-shadow: 0 0 5px var(--sr-shadow);
+    width: 250px;
+}
+
+.sr-nexus-search-button {
+    background-color: var(--sr-primary);
+    border: none;
+    border-radius: 4px;
+    color: var(--sr-background);
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.sr-nexus-search-button:hover {
+    background-color: var(--sr-highlight);
+}
+
+/* Navigation */
+#sr-nexus-navigation {
+    background-color: var(--sr-background-alt);
+    border-bottom: 1px solid var(--sr-border);
+}
+
+.sr-nexus-nav-inner {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.sr-nexus-nav-group {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sr-nexus-nav-group li {
+    margin: 0;
+    padding: 0;
+}
+
+.sr-nexus-nav-group li a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--sr-text);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.sr-nexus-nav-group li a:hover {
+    color: var(--sr-primary);
+    border-bottom-color: var(--sr-primary);
+    background-color: rgba(0, 153, 204, 0.1);
+}
+
+/* Personal Tools */
+.sr-nexus-personal-tools ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sr-nexus-personal-tools li {
+    margin: 0;
+    padding: 0;
+}
+
+.sr-nexus-personal-tools li a {
+    display: block;
+    padding: 0.5rem;
+    color: var(--sr-text-muted);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.sr-nexus-personal-tools li a:hover {
+    color: var(--sr-primary);
+}
+
+/* Content */
+#sr-nexus-content-wrapper {
+    display: flex;
 }
 
 #sr-nexus-content {
-    padding: 1.5rem !important;
+    grid-area: content;
+    padding: 1.5rem;
+    background-color: var(--sr-background);
+    flex: 1;
 }
 
 .sr-nexus-body {
-    background-color: #1e1e1e !important;
-    border: 1px solid #333333 !important;
-    border-radius: 4px !important;
-    padding: 1.5rem !important;
+    background-color: var(--sr-background-alt);
+    border: 1px solid var(--sr-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
+.sr-nexus-page-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--sr-border);
+    padding-bottom: 1rem;
+}
+
+.firstHeading {
+    color: var(--sr-primary);
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--sr-shadow);
+}
+
+#contentSub,
+#contentSub2 {
+    color: var(--sr-text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.sr-nexus-body-content {
+    line-height: 1.6;
+}
+
+.sr-nexus-body-content h1,
+.sr-nexus-body-content h2,
+.sr-nexus-body-content h3,
+.sr-nexus-body-content h4,
+.sr-nexus-body-content h5,
+.sr-nexus-body-content h6 {
+    color: var(--sr-secondary);
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+}
+
+.sr-nexus-body-content h2 {
+    border-bottom: 1px solid var(--sr-border);
+    padding-bottom: 0.3rem;
+}
+
+.sr-nexus-body-content p {
+    margin: 1rem 0;
+}
+
+.sr-nexus-body-content ul,
+.sr-nexus-body-content ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.sr-nexus-body-content pre,
+.sr-nexus-body-content code {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--sr-border);
+    border-radius: 3px;
+    font-family: "Courier New", Courier, monospace;
+    padding: 0.2rem 0.4rem;
+}
+
+.sr-nexus-body-content pre {
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.sr-nexus-body-content blockquote {
+    border-left: 3px solid var(--sr-accent);
+    margin: 1rem 0;
+    padding: 0.5rem 0 0.5rem 1rem;
+    background-color: rgba(102, 0, 204, 0.1);
+}
+
+.sr-nexus-body-content table {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.sr-nexus-body-content th,
+.sr-nexus-body-content td {
+    border: 1px solid var(--sr-border);
+    padding: 0.5rem;
+}
+
+.sr-nexus-body-content th {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--sr-primary);
+    text-align: left;
+}
+
+.sr-nexus-body-content tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar - improved to be less daunting */
 #sr-nexus-sidebar {
-    background-color: #1e1e1e !important;
-    border-left: 1px solid #333333 !important;
-    padding: 1.5rem 1rem !important;
+    grid-area: sidebar;
+    background-color: var(--sr-background-alt);
+    border-left: 1px solid var(--sr-border);
+    padding: 1.5rem 1rem;
+    min-width: 250px;
 }
 
+.sr-nexus-sidebar-inner {
+    position: sticky;
+    top: 1.5rem;
+}
+
+.sr-nexus-portal {
+    margin-bottom: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 0.5rem;
+    border: 1px solid var(--sr-border);
+}
+
+.sr-nexus-portal h3 {
+    color: var(--sr-primary);
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--sr-border);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px 3px 0 0;
+}
+
+.sr-nexus-portal-content ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sr-nexus-portal-content li {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+}
+
+.sr-nexus-portal-content a {
+    display: block;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.sr-nexus-portal-content a:hover {
+    background-color: rgba(0, 153, 204, 0.1);
+}
+
+/* Footer */
 #sr-nexus-footer {
-    background-color: #1e1e1e !important;
-    border-top: 1px solid #333333 !important;
-    padding: 1.5rem !important;
-    color: #a0a0a0 !important;
+    grid-area: footer;
+    background-color: var(--sr-background-alt);
+    border-top: 1px solid var(--sr-border);
+    padding: 1.5rem;
+    color: var(--sr-text-muted);
+    font-size: 0.9rem;
+}
+
+.sr-nexus-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.sr-nexus-footer-info ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sr-nexus-footer-info li {
+    margin-right: 1rem;
+}
+
+.sr-nexus-footer-info a {
+    color: var(--sr-text-muted);
+}
+
+.sr-nexus-footer-info a:hover {
+    color: var(--sr-primary);
+}
+
+.sr-nexus-footer-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Special Elements */
+.catlinks {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--sr-border);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+}
+
+.catlinks ul {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.catlinks li {
+    display: inline;
+    margin-right: 0.5rem;
+}
+
+/* Edit links - fixed size */
+.sr-nexus-body-content .mw-editsection {
+    font-size: 0.75rem !important;
+    margin-left: 0.5rem;
+    opacity: 0.7;
+}
+
+.sr-nexus-body-content .mw-editsection a {
+    color: var(--sr-text-muted) !important;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.sr-nexus-body-content .mw-editsection a:hover {
+    color: var(--sr-primary) !important;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sr-nexus-wrapper {
+        grid-template-areas:
+            "header"
+            "content"
+            "sidebar"
+            "footer";
+        grid-template-columns: 1fr;
+    }
+
+    .sr-nexus-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sr-nexus-header-tools {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .sr-nexus-nav-inner {
+        flex-direction: column;
+    }
+
+    .sr-nexus-search {
+        width: 100%;
+    }
+
+    .sr-nexus-search-input {
+        width: calc(100% - 2rem);
+    }
+
+    .sr-nexus-search-input:focus {
+        width: calc(100% - 2rem);
+    }
+
+    #sr-nexus-sidebar {
+        border-left: none;
+        border-top: 1px solid var(--sr-border);
+    }
+}
+
+/* Ensure images are responsive */
+.sr-nexus-body-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Fix for tables */
+.sr-nexus-body-content .wikitable {
+    background-color: var(--sr-background-alt);
+    color: var(--sr-text);
+    border: 1px solid var(--sr-border);
+}
+
+.sr-nexus-body-content .wikitable>tr>th,
+.sr-nexus-body-content .wikitable>*>tr>th {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--sr-primary);
+    border: 1px solid var(--sr-border);
+    padding: 0.5em;
+}
+
+.sr-nexus-body-content .wikitable>tr>td,
+.sr-nexus-body-content .wikitable>*>tr>td {
+    border: 1px solid var(--sr-border);
+    padding: 0.5em;
+}
+
+/* Fix for thumbnails */
+.sr-nexus-body-content .thumb {
+    margin: 0.5em;
+    border: 1px solid var(--sr-border);
+    background-color: var(--sr-background-alt);
+    padding: 3px;
+}
+
+.sr-nexus-body-content .thumbinner {
+    border: 1px solid var(--sr-border);
+    padding: 3px;
+    background-color: var(--sr-background-alt);
+    font-size: 0.9em;
+    text-align: center;
+    overflow: hidden;
+}
+
+.sr-nexus-body-content .thumbcaption {
+    border: none;
+    text-align: left;
+    line-height: 1.4;
+    padding: 3px;
+}
+
+/* Fix for TOC */
+.sr-nexus-body-content #toc,
+.sr-nexus-body-content .toc {
+    background-color: var(--sr-background-alt);
+    border: 1px solid var(--sr-border);
+    border-radius: 4px;
+    display: table;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.sr-nexus-body-content #toc h2,
+.sr-nexus-body-content .toc h2 {
+    display: inline;
+    border: none;
+    padding: 0;
+    font-size: 1.2em;
+    color: var(--sr-primary);
+}
+
+.sr-nexus-body-content .toctitle {
+    text-align: center;
+}
+
+.sr-nexus-body-content .toc ul {
+    list-style: none;
+    margin: 0.5em 0 0 0;
+    padding-left: 1.5em;
+}
+
+.sr-nexus-body-content .toc ul ul {
+    margin: 0;
+}
+
+/* Fix for notifications */
+.sr-nexus-new-messages {
+    background-color: var(--sr-accent);
+    color: white;
+    padding: 0.5em 1em;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    font-weight: bold;
 }

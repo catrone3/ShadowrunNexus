@@ -154,11 +154,23 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 						}
 						?>
 						<div class="sr-nexus-logo">
-							<a href="<?php echo isset( $this->data['nav_urls']['mainpage']['href'] ) ? htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) : '/'; ?>">
-								<div class="sr-nexus-logo-image"></div>
-								<div class="sr-nexus-sitename"><?php $this->msg( 'sitetitle' ); ?></div>
-							</a>
-						</div>
+                            <a href="<?php echo isset( $this->data['nav_urls']['mainpage']['href'] ) ? htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) : '/'; ?>">
+                                <?php
+                                // Check if a logo is available
+                                if ( isset( $this->data['logopath'] ) && $this->data['logopath'] ) {
+                                ?>
+                                <img src="<?php echo htmlspecialchars( $this->data['logopath'] ); ?>" alt="<?php $this->msg( 'sitetitle' ); ?>" class="sr-nexus-logo-img" />
+                                <?php
+                                } else {
+                                // Fallback to the styled logo
+                                ?>
+                                <div class="sr-nexus-logo-image"></div>
+                                <?php
+                                }
+                                ?>
+                                <div class="sr-nexus-sitename"><?php $this->msg( 'sitetitle' ); ?></div>
+                            </a>
+                        </div>
 					</div>
 					<div class="sr-nexus-header-tools">
 						<div class="sr-nexus-search">
