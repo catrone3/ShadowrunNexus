@@ -60,7 +60,7 @@ class SkinShadowrunNexus extends SkinTemplate {
 		}
 		
 		// For debugging - log the available template data keys
-		error_log('ShadowrunNexus template data keys: ' . implode(', ', array_keys($tpl->data)));
+		//error_log('ShadowrunNexus template data keys: ' . implode(', ', array_keys($tpl->data)));
 		
 		return $tpl;
 	}
