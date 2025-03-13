@@ -55,10 +55,30 @@ class ShadowrunNexusTemplate extends BaseTemplate {
         color: #ff9999 !important;
         }
 
-        /* Edit section links */
+        /* Edit section brackets and links - super aggressive */
+        .mw-editsection,
+        .mw-editsection-bracket,
+        .mw-editsection-divider {
+        font-size: 0.75rem !important;
+        color: #a0a0a0 !important;
+        opacity: 0.7 !important;
+        font-weight: normal !important;
+        }
+
+        .mw-editsection {
+        vertical-align: super !important;
+        line-height: 1 !important;
+        }
+
         .mw-editsection a {
         font-size: 0.75rem !important;
         color: #a0a0a0 !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
+        padding: 0.1rem 0.3rem !important;
+        border-radius: 3px !important;
+        margin: 0 0.1rem !important;
+        display: inline-block !important;
+        font-weight: normal !important;
         }
 
         /* Ensure body has correct background */

@@ -77,6 +77,63 @@
         })
       }
   
+      // Fix edit section brackets size
+      const fixEditSectionBrackets = () => {
+        const editSections = document.querySelectorAll(".mw-editsection")
+  
+        editSections.forEach((section) => {
+          // Add a class to help with styling
+          section.classList.add("sr-nexus-fixed-edit")
+  
+          // Force inline style on brackets and dividers
+          const brackets = section.querySelectorAll(".mw-editsection-bracket")
+          const dividers = section.querySelectorAll(".mw-editsection-divider")
+          const links = section.querySelectorAll("a")
+  
+          brackets.forEach((bracket) => {
+            bracket.style.fontSize = "0.75rem"
+            bracket.style.color = "#a0a0a0"
+            bracket.style.opacity = "0.5"
+            bracket.style.fontWeight = "normal"
+          })
+  
+          dividers.forEach((divider) => {
+            divider.style.fontSize = "0.75rem"
+            divider.style.color = "#a0a0a0"
+            divider.style.opacity = "0.5"
+            divider.style.fontWeight = "normal"
+          })
+  
+          links.forEach((link) => {
+            link.style.fontSize = "0.75rem"
+            link.style.color = "#a0a0a0"
+            link.style.backgroundColor = "rgba(0, 0, 0, 0.2)"
+            link.style.padding = "0.1rem 0.3rem"
+            link.style.borderRadius = "3px"
+            link.style.margin = "0 0.1rem"
+            link.style.display = "inline-block"
+            link.style.fontWeight = "normal"
+  
+            // Add hover effect with event listeners
+            link.addEventListener("mouseover", () => {
+              link.style.color = "#0099cc"
+              link.style.backgroundColor = "rgba(0, 0, 0, 0.3)"
+            })
+  
+            link.addEventListener("mouseout", () => {
+              link.style.color = "#a0a0a0"
+              link.style.backgroundColor = "rgba(0, 0, 0, 0.2)"
+            })
+          })
+  
+          // Set the entire section to be smaller and superscript
+          section.style.fontSize = "0.75rem"
+          section.style.verticalAlign = "super"
+          section.style.lineHeight = "1"
+          section.style.opacity = "0.7"
+        })
+      }
+  
       // Initialize all features
       const init = () => {
         addGlitchEffect()
@@ -91,6 +148,12 @@
         document.body.classList.remove("client-nojs")
         document.body.classList.add("client-js")
       }
+  
+      // Run the fix
+      fixEditSectionBrackets()
+  
+      // Also run it after a short delay to catch any elements that might load later
+      setTimeout(fixEditSectionBrackets, 1000)
   
       // Run initialization
       init()

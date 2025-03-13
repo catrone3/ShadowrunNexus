@@ -86,24 +86,87 @@ a.new[href]:hover,
     color: #ff9999 !important;
 }
 
-/* Edit section links */
-.mw-editsection a,
-.mw-editsection a:link,
-.mw-editsection a:visited {
+h1 .mw-editsection,
+h2 .mw-editsection,
+h3 .mw-editsection,
+h4 .mw-editsection,
+h5 .mw-editsection,
+h6 .mw-editsection,
+.mw-headline .mw-editsection,
+#firstHeading .mw-editsection,
+.section-heading .mw-editsection {
+    font-size: 0.75rem !important;
+    vertical-align: super !important;
+    line-height: 1 !important;
+    opacity: 0.7 !important;
+}
+
+/* Target brackets specifically */
+h1 .mw-editsection-bracket,
+h2 .mw-editsection-bracket,
+h3 .mw-editsection-bracket,
+h4 .mw-editsection-bracket,
+h5 .mw-editsection-bracket,
+h6 .mw-editsection-bracket,
+.mw-headline .mw-editsection-bracket,
+#firstHeading .mw-editsection-bracket,
+.section-heading .mw-editsection-bracket {
+    font-size: 0.75rem !important;
+    color: #a0a0a0 !important;
+    opacity: 0.5 !important;
+    font-weight: normal !important;
+}
+
+/* Target dividers (pipes) */
+h1 .mw-editsection-divider,
+h2 .mw-editsection-divider,
+h3 .mw-editsection-divider,
+h4 .mw-editsection-divider,
+h5 .mw-editsection-divider,
+h6 .mw-editsection-divider,
+.mw-headline .mw-editsection-divider,
+#firstHeading .mw-editsection-divider,
+.section-heading .mw-editsection-divider {
+    font-size: 0.75rem !important;
+    color: #a0a0a0 !important;
+    opacity: 0.5 !important;
+    font-weight: normal !important;
+}
+
+/* Target the edit links themselves */
+h1 .mw-editsection a,
+h2 .mw-editsection a,
+h3 .mw-editsection a,
+h4 .mw-editsection a,
+h5 .mw-editsection a,
+h6 .mw-editsection a,
+.mw-headline .mw-editsection a,
+#firstHeading .mw-editsection a,
+.section-heading .mw-editsection a {
     font-size: 0.75rem !important;
     color: #a0a0a0 !important;
     background-color: rgba(0, 0, 0, 0.2) !important;
     padding: 0.1rem 0.3rem !important;
     border-radius: 3px !important;
+    margin: 0 0.1rem !important;
+    display: inline-block !important;
+    font-weight: normal !important;
 }
 
-.mw-editsection a:hover,
-.mw-editsection a:active,
-.mw-editsection a:focus {
+h1 .mw-editsection a:hover,
+h2 .mw-editsection a:hover,
+h3 .mw-editsection a:hover,
+h4 .mw-editsection a:hover,
+h5 .mw-editsection a:hover,
+h6 .mw-editsection a:hover,
+.mw-headline .mw-editsection a:hover,
+#firstHeading .mw-editsection a:hover,
+.section-heading .mw-editsection a:hover {
     color: #0099cc !important;
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
+/* Fix for edit section brackets and pipes */
 .mw-editsection,
 .mw-editsection-bracket,
 .mw-editsection-divider {
@@ -145,9 +208,10 @@ a.new[href]:hover,
 /* Ko-fi support link styling */
 .sr-nexus-kofi {
     text-align: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
     border-top: 1px solid var(--sr-border);
+    font-size: 0.9rem;
 }
 
 .sr-nexus-kofi a {
@@ -155,10 +219,13 @@ a.new[href]:hover,
     align-items: center;
     background-color: #13c3ff !important;
     color: #fff !important;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 4px;
     font-weight: bold;
     transition: all 0.2s ease;
+    font-size: 0.9rem;
+    max-width: 200px;
+    margin: 0 auto;
 }
 
 .sr-nexus-kofi a:hover {
@@ -168,9 +235,9 @@ a.new[href]:hover,
 }
 
 .sr-nexus-kofi-icon {
-    margin-right: 0.5rem;
-    width: 20px;
-    height: 20px;
+    margin-right: 0.4rem;
+    width: 16px;
+    height: 16px;
 }
 
 
