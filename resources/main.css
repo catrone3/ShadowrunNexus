@@ -3,45 +3,58 @@
 /* Color Variables */
 :root {
     --sr-primary: #0099cc;
-    /* Toned down from #00c8ff */
     --sr-secondary: #cc0099;
-    /* Toned down from #ff00c8 */
     --sr-background: #121212;
     --sr-background-alt: #1e1e1e;
     --sr-text: #e0e0e0;
     --sr-text-muted: #a0a0a0;
     --sr-accent: #6600cc;
-    /* Toned down from #7700ff */
     --sr-border: #333333;
     --sr-highlight: #cc7700;
-    /* Toned down from #ff9900 */
     --sr-link: #66b3ff;
-    /* New softer link color */
     --sr-link-hover: #99ccff;
-    /* New softer link hover color */
     --sr-shadow: rgba(0, 153, 204, 0.2);
-    /* Adjusted shadow color */
 }
 
 /* Global Styles */
 body {
-    background-color: var(--sr-background);
-    color: var(--sr-text);
-    font-family: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
+    background-color: var(--sr-background) !important;
+    color: var(--sr-text) !important;
+    font-family: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.6 !important;
 }
 
-a {
-    color: var(--sr-link);
-    text-decoration: none;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
+/* Override ALL links to ensure proper color */
+a,
+a:link,
+a:visited,
+a:-webkit-any-link {
+    color: var(--sr-link) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease, text-shadow 0.2s ease !important;
 }
 
-a:hover {
-    color: var(--sr-link-hover);
-    text-shadow: 0 0 3px rgba(102, 179, 255, 0.3);
+a:hover,
+a:active,
+a:focus {
+    color: var(--sr-link-hover) !important;
+    text-shadow: 0 0 3px rgba(102, 179, 255, 0.3) !important;
+}
+
+/* Override specific link types */
+.sr-nexus-body-content a,
+.sr-nexus-body-content a:link,
+.sr-nexus-body-content a:visited,
+.sr-nexus-body-content a:-webkit-any-link {
+    color: var(--sr-link) !important;
+}
+
+.sr-nexus-body-content a:hover,
+.sr-nexus-body-content a:active,
+.sr-nexus-body-content a:focus {
+    color: var(--sr-link-hover) !important;
 }
 
 /* Layout */
@@ -88,7 +101,7 @@ a:hover {
 .sr-nexus-logo a {
     display: flex;
     align-items: center;
-    color: var(--sr-primary);
+    color: var(--sr-primary) !important;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -117,6 +130,11 @@ a:hover {
     font-size: 16px;
     z-index: 3;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.sr-nexus-logo-img {
+    max-height: 40px;
+    margin-right: 10px;
 }
 
 .sr-nexus-sitename {
@@ -198,14 +216,14 @@ a:hover {
 .sr-nexus-nav-group li a {
     display: block;
     padding: 0.75rem 1rem;
-    color: var(--sr-text);
+    color: var(--sr-text) !important;
     font-weight: 500;
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
 }
 
 .sr-nexus-nav-group li a:hover {
-    color: var(--sr-primary);
+    color: var(--sr-primary) !important;
     border-bottom-color: var(--sr-primary);
     background-color: rgba(0, 153, 204, 0.1);
 }
@@ -226,13 +244,13 @@ a:hover {
 .sr-nexus-personal-tools li a {
     display: block;
     padding: 0.5rem;
-    color: var(--sr-text-muted);
+    color: var(--sr-text-muted) !important;
     font-size: 0.9rem;
     transition: all 0.2s ease;
 }
 
 .sr-nexus-personal-tools li a:hover {
-    color: var(--sr-primary);
+    color: var(--sr-primary) !important;
 }
 
 /* Content */
@@ -397,10 +415,12 @@ a:hover {
     padding: 0.3rem 0.5rem;
     border-radius: 3px;
     transition: all 0.2s ease;
+    color: var(--sr-link) !important;
 }
 
 .sr-nexus-portal-content a:hover {
     background-color: rgba(0, 153, 204, 0.1);
+    color: var(--sr-link-hover) !important;
 }
 
 /* Footer */
@@ -433,11 +453,11 @@ a:hover {
 }
 
 .sr-nexus-footer-info a {
-    color: var(--sr-text-muted);
+    color: var(--sr-text-muted) !important;
 }
 
 .sr-nexus-footer-info a:hover {
-    color: var(--sr-primary);
+    color: var(--sr-primary) !important;
 }
 
 .sr-nexus-footer-icons {
@@ -466,6 +486,14 @@ a:hover {
     margin-right: 0.5rem;
 }
 
+.catlinks a {
+    color: var(--sr-link) !important;
+}
+
+.catlinks a:hover {
+    color: var(--sr-link-hover) !important;
+}
+
 /* Edit links - fixed size */
 .sr-nexus-body-content .mw-editsection {
     font-size: 0.75rem !important;
@@ -473,7 +501,9 @@ a:hover {
     opacity: 0.7;
 }
 
-.sr-nexus-body-content .mw-editsection a {
+.sr-nexus-body-content .mw-editsection a,
+.sr-nexus-body-content .mw-editsection a:link,
+.sr-nexus-body-content .mw-editsection a:visited {
     color: var(--sr-text-muted) !important;
     background-color: rgba(0, 0, 0, 0.2);
     padding: 0.1rem 0.3rem;
@@ -481,7 +511,9 @@ a:hover {
     transition: all 0.2s ease;
 }
 
-.sr-nexus-body-content .mw-editsection a:hover {
+.sr-nexus-body-content .mw-editsection a:hover,
+.sr-nexus-body-content .mw-editsection a:active,
+.sr-nexus-body-content .mw-editsection a:focus {
     color: var(--sr-primary) !important;
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -614,6 +646,18 @@ a:hover {
     margin: 0;
 }
 
+.sr-nexus-body-content .toc a,
+.sr-nexus-body-content .toc a:link,
+.sr-nexus-body-content .toc a:visited {
+    color: var(--sr-link) !important;
+}
+
+.sr-nexus-body-content .toc a:hover,
+.sr-nexus-body-content .toc a:active,
+.sr-nexus-body-content .toc a:focus {
+    color: var(--sr-link-hover) !important;
+}
+
 /* Fix for notifications */
 .sr-nexus-new-messages {
     background-color: var(--sr-accent);
@@ -622,4 +666,36 @@ a:hover {
     margin-bottom: 1em;
     border-radius: 4px;
     font-weight: bold;
+}
+
+/* Fix for -webkit-link color */
+a[href],
+a:link,
+a:visited,
+a:-webkit-any-link {
+    color: var(--sr-link) !important;
+}
+
+/* Fix for specific MediaWiki elements */
+#mw-content-text a,
+.mw-body-content a,
+.mw-parser-output a {
+    color: var(--sr-link) !important;
+}
+
+#mw-content-text a:hover,
+.mw-body-content a:hover,
+.mw-parser-output a:hover {
+    color: var(--sr-link-hover) !important;
+}
+
+/* Fix for new page links */
+a.new,
+a.new:visited,
+a.new:link {
+    color: #dd6666 !important;
+}
+
+a.new:hover {
+    color: #ff9999 !important;
 }
