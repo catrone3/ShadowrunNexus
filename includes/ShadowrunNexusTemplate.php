@@ -27,9 +27,6 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 * Outputs the entire contents of the page
 	 */
 	public function execute() {
-		// For debugging - let's see what data we have available
-		//echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
-
 		// Output the opening html element and head element
 		echo '<!DOCTYPE html>';
 		echo '<html class="client-nojs" lang="' . htmlspecialchars( $this->get( 'lang' ) ) . '" dir="' . htmlspecialchars( $this->get( 'dir' ) ) . '">';
@@ -41,7 +38,7 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		echo $this->get( 'csslinks' );
 		echo $this->get( 'headlinks' );
 		
-		// Add site scripts - removed jsvarurl section that was causing warnings
+		// Add site scripts
 		echo $this->get( 'headscripts' );
 		
 		echo '</head>';
@@ -112,13 +109,16 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 						</div>
 						<div id="bodyContent" class="sr-nexus-body-content">
 							<?php 
-							// Make sure we're outputting the body content
-							if ( isset( $this->data['bodycontent'] ) ) {
+							// Try multiple approaches to display the content
+							if ( isset( $this->data['bodycontent'] ) && $this->data['bodycontent'] ) {
+								// First try: Use bodycontent if available
 								$this->html( 'bodycontent' );
+							} elseif ( isset( $this->data['bodytext'] ) && $this->data['bodytext'] ) {
+								// Second try: Use bodytext if available
+								echo $this->data['bodytext'];
 							} else {
+								// Fallback: Show an error message
 								echo '<div class="error">Page content not found</div>';
-								// For debugging - uncomment to see what data is available
-								echo '<pre>Available data keys: ' . htmlspecialchars(implode(', ', array_keys($this->data))) . '</pre>';
 							}
 							?>
 							<?php if ( isset( $this->data['printfooter'] ) && $this->data['printfooter'] ) { ?>

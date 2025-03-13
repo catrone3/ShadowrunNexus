@@ -55,12 +55,20 @@ class SkinShadowrunNexus extends SkinTemplate {
 		$tpl = parent::prepareQuickTemplate();
 		
 		// Make sure bodycontent is set
-		if ( !isset( $tpl->data['bodycontent'] ) && isset( $this->getOutput()->mBodytext ) ) {
-			$tpl->set( 'bodycontent', $this->getOutput()->mBodytext );
+		if ( !isset( $tpl->data['bodycontent'] ) || empty( $tpl->data['bodycontent'] ) ) {
+			$output = $this->getOutput();
+			if ( isset( $output->mBodytext ) ) {
+				$tpl->set( 'bodycontent', $output->mBodytext );
+			}
 		}
 		
-		// For debugging - log the available template data keys
-		//error_log('ShadowrunNexus template data keys: ' . implode(', ', array_keys($tpl->data)));
+		// Also set bodytext as an alternative
+		if ( !isset( $tpl->data['bodytext'] ) || empty( $tpl->data['bodytext'] ) ) {
+			$output = $this->getOutput();
+			if ( isset( $output->mBodytext ) ) {
+				$tpl->set( 'bodytext', $output->mBodytext );
+			}
+		}
 		
 		return $tpl;
 	}
