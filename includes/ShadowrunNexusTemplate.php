@@ -41,8 +41,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		echo $this->get( 'csslinks' );
 		echo $this->get( 'headlinks' );
 		
-		// Add any additional head items
-		if ( $this->data['jsvarurl'] ) {
+		// Add any additional head items - with proper checks
+		if ( isset( $this->data['jsvarurl'] ) && $this->data['jsvarurl'] ) {
 			echo '<script src="' . htmlspecialchars( $this->data['jsvarurl'] ) . '"></script>';
 		}
 		
@@ -60,14 +60,14 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 				<div class="sr-nexus-header-inner">
 					<div class="sr-nexus-logo-container">
 						<?php
-						if ( $this->data['newtalk'] ) {
+						if ( isset( $this->data['newtalk'] ) && $this->data['newtalk'] ) {
 							?>
 							<div class="sr-nexus-new-messages"><?php $this->html( 'newtalk' ); ?></div>
 							<?php
 						}
 						?>
 						<div class="sr-nexus-logo">
-							<a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
+							<a href="<?php echo isset( $this->data['nav_urls']['mainpage']['href'] ) ? htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) : '/'; ?>">
 								<div class="sr-nexus-logo-image"></div>
 								<div class="sr-nexus-sitename"><?php $this->msg( 'sitetitle' ); ?></div>
 							</a>
@@ -101,17 +101,17 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 			<div id="sr-nexus-content-wrapper">
 				<div id="sr-nexus-content" class="sr-nexus-content">
 					<div id="sr-nexus-body" class="sr-nexus-body">
-						<?php if ( $this->data['sitenotice'] ) { ?>
+						<?php if ( isset( $this->data['sitenotice'] ) && $this->data['sitenotice'] ) { ?>
 							<div id="siteNotice"><?php $this->html( 'sitenotice' ); ?></div>
 						<?php } ?>
 						<div class="sr-nexus-page-header">
 							<h1 id="firstHeading" class="firstHeading">
 								<?php $this->html( 'title' ); ?>
 							</h1>
-							<?php if ( $this->data['subtitle'] ) { ?>
+							<?php if ( isset( $this->data['subtitle'] ) && $this->data['subtitle'] ) { ?>
 								<div id="contentSub"><?php $this->html( 'subtitle' ); ?></div>
 							<?php } ?>
-							<?php if ( $this->data['undelete'] ) { ?>
+							<?php if ( isset( $this->data['undelete'] ) && $this->data['undelete'] ) { ?>
 								<div id="contentSub2"><?php $this->html( 'undelete' ); ?></div>
 							<?php } ?>
 						</div>
@@ -124,13 +124,13 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 								echo '<div class="error">Page content not found</div>';
 							}
 							?>
-							<?php if ( $this->data['printfooter'] ) { ?>
+							<?php if ( isset( $this->data['printfooter'] ) && $this->data['printfooter'] ) { ?>
 								<div class="printfooter"><?php $this->html( 'printfooter' ); ?></div>
 							<?php } ?>
-							<?php if ( $this->data['catlinks'] ) { ?>
+							<?php if ( isset( $this->data['catlinks'] ) && $this->data['catlinks'] ) { ?>
 								<?php $this->html( 'catlinks' ); ?>
 							<?php } ?>
-							<?php if ( $this->data['dataAfterContent'] ) { ?>
+							<?php if ( isset( $this->data['dataAfterContent'] ) && $this->data['dataAfterContent'] ) { ?>
 								<?php $this->html( 'dataAfterContent' ); ?>
 							<?php } ?>
 						</div>
@@ -139,7 +139,11 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 				<div id="sr-nexus-sidebar" class="sr-nexus-sidebar">
 					<div class="sr-nexus-sidebar-inner">
 						<div class="sr-nexus-sidebar-tools">
-							<?php $this->renderPortals( $this->data['sidebar'] ); ?>
+							<?php 
+							if ( isset( $this->data['sidebar'] ) && is_array( $this->data['sidebar'] ) ) {
+								$this->renderPortals( $this->data['sidebar'] );
+							}
+							?>
 						</div>
 					</div>
 				</div>
@@ -147,22 +151,40 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 			<footer id="sr-nexus-footer" class="sr-nexus-footer">
 				<div class="sr-nexus-footer-inner">
 					<div class="sr-nexus-footer-info">
-						<?php foreach ( $this->getFooterLinks() as $category => $links ) { ?>
+						<?php 
+						$footerLinks = $this->getFooterLinks();
+						if ( is_array( $footerLinks ) ) {
+							foreach ( $footerLinks as $category => $links ) {
+								if ( is_array( $links ) ) {
+						?>
 							<ul id="sr-nexus-footer-<?php echo $category; ?>">
 								<?php foreach ( $links as $link ) { ?>
 									<li id="sr-nexus-footer-<?php echo $link; ?>"><?php $this->html( $link ); ?></li>
 								<?php } ?>
 							</ul>
-						<?php } ?>
+						<?php 
+								}
+							}
+						}
+						?>
 					</div>
 					<div class="sr-nexus-footer-icons">
-						<?php foreach ( $this->getFooterIcons( 'icononly' ) as $blockName => $footerIcons ) { ?>
+						<?php 
+						$footerIcons = $this->getFooterIcons( 'icononly' );
+						if ( is_array( $footerIcons ) ) {
+							foreach ( $footerIcons as $blockName => $icons ) {
+								if ( is_array( $icons ) ) {
+						?>
 							<div id="sr-nexus-footer-<?php echo htmlspecialchars( $blockName ); ?>">
-								<?php foreach ( $footerIcons as $icon ) { ?>
+								<?php foreach ( $icons as $icon ) { ?>
 									<?php echo $this->getSkin()->makeFooterIcon( $icon ); ?>
 								<?php } ?>
 							</div>
-						<?php } ?>
+						<?php 
+								}
+							}
+						}
+						?>
 					</div>
 				</div>
 			</footer>
@@ -208,7 +230,7 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 					$this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'sr-nexus-toolbox' );
 					break;
 				case 'LANGUAGES':
-					if ( $this->data['language_urls'] !== false ) {
+					if ( isset( $this->data['language_urls'] ) && $this->data['language_urls'] !== false ) {
 						$this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages', 'sr-nexus-languages' );
 					}
 					break;
@@ -260,9 +282,16 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		?>
 		<div class="sr-nexus-personal-tools">
 			<ul>
-				<?php foreach ( $this->getPersonalTools() as $key => $item ) { ?>
+				<?php 
+				$personalTools = $this->getPersonalTools();
+				if ( is_array( $personalTools ) ) {
+					foreach ( $personalTools as $key => $item ) { 
+				?>
 					<?php echo $this->makeListItem( $key, $item ); ?>
-				<?php } ?>
+				<?php 
+					}
+				}
+				?>
 			</ul>
 		</div>
 		<?php
@@ -279,25 +308,27 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		}
 
 		foreach ( $navGroups as $navGroup ) {
-			if ( isset( $this->data['nav_urls'][$navGroup] ) ) {
+			if ( isset( $this->data['nav_urls'][$navGroup] ) && is_array( $this->data['nav_urls'][$navGroup] ) ) {
 				?>
 				<ul class="sr-nexus-nav-group sr-nexus-nav-<?php echo strtolower( $navGroup ); ?>">
 					<?php foreach ( $this->data['nav_urls'][$navGroup] as $navItem ) { ?>
 						<?php if ( isset( $navItem['text'] ) ) { ?>
-							<li<?php echo $navItem['attributes'] ?>><a href="<?php echo htmlspecialchars( $navItem['href'] ) ?>"<?php echo $navItem['key'] ?>><?php echo htmlspecialchars( $navItem['text'] ) ?></a></li>
+							<li<?php echo isset( $navItem['attributes'] ) ? $navItem['attributes'] : ''; ?>><a href="<?php echo htmlspecialchars( $navItem['href'] ) ?>"<?php echo isset( $navItem['key'] ) ? $navItem['key'] : ''; ?>><?php echo htmlspecialchars( $navItem['text'] ) ?></a></li>
 						<?php } ?>
 					<?php } ?>
 				</ul>
 				<?php
 			} else {
-				$navigation = $this->data['sidebar'][$navGroup] ?? [];
+				$navigation = isset( $this->data['sidebar'][$navGroup] ) ? $this->data['sidebar'][$navGroup] : [];
+				if ( is_array( $navigation ) && !empty( $navigation ) ) {
 				?>
 				<ul class="sr-nexus-nav-group sr-nexus-nav-<?php echo strtolower( $navGroup ); ?>">
 					<?php foreach ( $navigation as $navItem ) { ?>
-						<?php echo $this->makeListItem( $navItem['id'] ?? null, $navItem ); ?>
+						<?php echo $this->makeListItem( isset( $navItem['id'] ) ? $navItem['id'] : null, $navItem ); ?>
 					<?php } ?>
 				</ul>
 				<?php
+				}
 			}
 		}
 	}
