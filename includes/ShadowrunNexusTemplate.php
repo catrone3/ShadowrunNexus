@@ -31,13 +31,47 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		echo '<!DOCTYPE html>';
 		echo '<html class="client-nojs" lang="' . htmlspecialchars( $this->get( 'lang' ) ) . '" dir="' . htmlspecialchars( $this->get( 'dir' ) ) . '">';
 		echo '<head>';
-		echo '<meta charset="UTF-8" />';
-		echo '<title>' . htmlspecialchars( $this->get( 'pagetitle' ) ) . '</title>';
-		
-		// Include all the necessary head elements
-		echo $this->get( 'csslinks' );
-		echo $this->get( 'headlinks' );
-		
+        echo '<meta charset="UTF-8" />';
+        echo '<title>' . htmlspecialchars( $this->get( 'pagetitle' ) ) . '</title>';
+
+        // Add direct style tag for critical styles
+        echo '<style>
+        /* Critical styles that must be applied */
+        a, a:link, a:visited, a:-webkit-any-link {
+        color: #66b3ff !important;
+        text-decoration: none !important;
+        }
+
+        a:hover, a:active, a:focus {
+        color: #99ccff !important;
+        }
+
+        /* New page links */
+        a.new, a.new:visited, a.new:link {
+        color: #dd6666 !important;
+        }
+
+        a.new:hover {
+        color: #ff9999 !important;
+        }
+
+        /* Edit section links */
+        .mw-editsection a {
+        font-size: 0.75rem !important;
+        color: #a0a0a0 !important;
+        }
+
+        /* Ensure body has correct background */
+        body {
+        background-color: #121212 !important;
+        color: #e0e0e0 !important;
+        }
+        </style>';
+
+        // Include all the necessary head elements
+        echo $this->get( 'csslinks' );
+        echo $this->get( 'headlinks' );
+                
 		// Add site scripts
 		echo $this->get( 'headscripts' );
 		

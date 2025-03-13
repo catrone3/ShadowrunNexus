@@ -43,8 +43,33 @@ class SkinShadowrunNexus extends SkinTemplate {
 			'skins.shadowrunnexus.styles'
 		] );
 		
-		// For debugging - add inline CSS to verify CSS loading works
-		$out->addInlineStyle( 'body { border: 5px solid red !important; }' );
+		// Add critical inline styles to ensure they're applied immediately
+		$out->addInlineStyle( '
+			/* Critical styles for links */
+			a, a:link, a:visited, a:-webkit-any-link {
+				color: #66b3ff !important;
+				text-decoration: none !important;
+			}
+			
+			a:hover, a:active, a:focus {
+				color: #99ccff !important;
+			}
+			
+			/* New page links */
+			a.new, a.new:visited, a.new:link {
+				color: #dd6666 !important;
+			}
+			
+			a.new:hover {
+				color: #ff9999 !important;
+			}
+			
+			/* Edit section links */
+			.mw-editsection a {
+				font-size: 0.75rem !important;
+				color: #a0a0a0 !important;
+			}
+		' );
 	}
 
 	/**
