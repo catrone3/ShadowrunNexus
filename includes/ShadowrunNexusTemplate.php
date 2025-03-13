@@ -196,6 +196,15 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	}
 
 	/**
+	 * Get the toolbox items
+	 * 
+	 * @return array
+	 */
+	protected function getToolbox() {
+    return $this->data['sidebar']['TOOLBOX'] ?? [];
+}
+
+	/**
 	 * Render a series of portals
 	 *
 	 * @param array $portals
