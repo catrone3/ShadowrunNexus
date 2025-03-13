@@ -27,7 +27,16 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 * Outputs the entire contents of the page
 	 */
 	public function execute() {
-		$this->html( 'headelement' );
+		// Output the opening html element and head element
+		echo '<!DOCTYPE html>';
+		echo '<html class="client-nojs" lang="' . htmlspecialchars( $this->get( 'lang' ) ) . '" dir="' . htmlspecialchars( $this->get( 'dir' ) ) . '">';
+		echo '<head>';
+		echo '<meta charset="UTF-8" />';
+		echo '<title>' . htmlspecialchars( $this->get( 'pagetitle' ) ) . '</title>';
+		echo $this->get( 'csslinks' );
+		echo $this->get( 'headlinks' );
+		echo '</head>';
+		echo '<body class="' . htmlspecialchars( $this->get( 'bodyclass' ) ) . '">';
 		?>
 		<div id="sr-nexus-wrapper" class="sr-nexus-wrapper">
 			<header id="sr-nexus-header">
@@ -134,10 +143,11 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 				</div>
 			</footer>
 		</div>
-		<?php $this->printTrail(); ?>
-		</body>
-		</html>
-		<?php
+		<?php 
+		// Output the closing body and html elements
+		echo $this->get( 'bottomscripts' );
+		echo '</body>';
+		echo '</html>';
 	}
 
 	/**
