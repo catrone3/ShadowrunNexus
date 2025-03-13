@@ -47,5 +47,19 @@ class SkinShadowrunNexus extends SkinTemplate {
 	function setupSkinUserCss( OutputPage $out ) {
 		parent::setupSkinUserCss( $out );
 	}
+	
+	/**
+	 * Override to ensure we're properly preparing the template data
+	 */
+	public function prepareQuickTemplate() {
+		$tpl = parent::prepareQuickTemplate();
+		
+		// Make sure bodycontent is set
+		if ( !isset( $tpl->data['bodycontent'] ) && isset( $this->getOutput()->mBodytext ) ) {
+			$tpl->set( 'bodycontent', $this->getOutput()->mBodytext );
+		}
+		
+		return $tpl;
+	}
 }
 

@@ -27,16 +27,33 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 * Outputs the entire contents of the page
 	 */
 	public function execute() {
+		// For debugging - let's see what data we have available
+		// echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
+
 		// Output the opening html element and head element
 		echo '<!DOCTYPE html>';
 		echo '<html class="client-nojs" lang="' . htmlspecialchars( $this->get( 'lang' ) ) . '" dir="' . htmlspecialchars( $this->get( 'dir' ) ) . '">';
 		echo '<head>';
 		echo '<meta charset="UTF-8" />';
 		echo '<title>' . htmlspecialchars( $this->get( 'pagetitle' ) ) . '</title>';
+		
+		// Include all the necessary head elements
 		echo $this->get( 'csslinks' );
 		echo $this->get( 'headlinks' );
+		
+		// Add any additional head items
+		if ( $this->data['jsvarurl'] ) {
+			echo '<script src="' . htmlspecialchars( $this->data['jsvarurl'] ) . '"></script>';
+		}
+		
+		// Add site scripts
+		echo $this->get( 'headscripts' );
+		
 		echo '</head>';
 		echo '<body class="' . htmlspecialchars( $this->get( 'bodyclass' ) ) . '">';
+		
+		// Add body content
+		echo $this->get( 'prebodyhtml' );
 		?>
 		<div id="sr-nexus-wrapper" class="sr-nexus-wrapper">
 			<header id="sr-nexus-header">
@@ -99,7 +116,14 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 							<?php } ?>
 						</div>
 						<div id="bodyContent" class="sr-nexus-body-content">
-							<?php $this->html( 'bodycontent' ); ?>
+							<?php 
+							// Make sure we're outputting the body content
+							if ( isset( $this->data['bodycontent'] ) ) {
+								$this->html( 'bodycontent' );
+							} else {
+								echo '<div class="error">Page content not found</div>';
+							}
+							?>
 							<?php if ( $this->data['printfooter'] ) { ?>
 								<div class="printfooter"><?php $this->html( 'printfooter' ); ?></div>
 							<?php } ?>
@@ -145,6 +169,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		</div>
 		<?php 
 		// Output the closing body and html elements
+		echo $this->get( 'debughtml' );
+		echo $this->get( 'reporttime' );
 		echo $this->get( 'bottomscripts' );
 		echo '</body>';
 		echo '</html>';
