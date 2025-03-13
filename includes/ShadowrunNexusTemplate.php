@@ -28,7 +28,7 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 */
 	public function execute() {
 		// For debugging - let's see what data we have available
-		echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
+		//echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
 
 		// Output the opening html element and head element
 		echo '<!DOCTYPE html>';
