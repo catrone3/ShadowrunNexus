@@ -2,122 +2,99 @@
  * ShadowrunNexus - A MediaWiki skin blending cyberpunk and magical aesthetics
  */
 
-(function() {
-    'use strict';
-    
-    // Add cyberpunk glitch effect to headings on hover
-    function addGlitchEffect() {
-      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      
-      headings.forEach(heading => {
-        heading.addEventListener('mouseenter', () => {
-          heading.classList.add('sr-glitch-active');
-        });
-        
-        heading.addEventListener('mouseleave', () => {
-          heading.classList.remove('sr-glitch-active');
-        });
-      });
-    }
-    
-    // Add magic glow effect to links on hover
-    function addMagicGlowEffect() {
-      const links = document.querySelectorAll('#bodyContent a');
-      
-      links.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-          link.classList.add('sr-magic-glow');
-        });
-        
-        link.addEventListener('mouseleave', () => {
-          link.classList.remove('sr-magic-glow');
-        });
-      });
-    }
-    
-    // Add cyberpunk terminal effect to code blocks
-    function addTerminalEffect() {
-      const codeBlocks = document.querySelectorAll('pre');
-      
-      codeBlocks.forEach(block => {
-        // Add a blinking cursor at the end of the code block
-        const cursor = document.createElement('span');
-        cursor.classList.add('sr-terminal-cursor');
-        block.appendChild(cursor);
-        
-        // Add a "typed" effect when the code block comes into view
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              block.classList.add('sr-terminal-typing');
-              observer.unobserve(block);
-            }
-          });
-        }, { threshold: 0.5 });
-        
-        observer.observe(block);
-      });
-    }
-    
-    // Add parallax effect to magic rune decorations
-    function addParallaxEffect() {
-      const body = document.querySelector('.sr-nexus-body');
-      if (!body) return;
-      
-      document.addEventListener('mousemove', (e) => {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        
-        const offsetX = (x - 0.5) * 20;
-        const offsetY = (y - 0.5) * 20;
-        
-        // Use CSS custom properties to apply the transform
-        body.style.setProperty('--rune-offset-x', `${offsetX}px`);
-        body.style.setProperty('--rune-offset-y', `${offsetY}px`);
-      });
-    }
-    
-    // Add neon flicker effect to neon elements
-    function addNeonFlickerEffect() {
-      const neonElements = document.querySelectorAll('.sr-nexus-logo-image, .sr-nexus-sitename');
-      
-      neonElements.forEach(element => {
-        setInterval(() => {
-          if (Math.random() > 0.97) {
-            element.classList.add('sr-neon-flicker');
-            setTimeout(() => {
-              element.classList.remove('sr-neon-flicker');
-            }, 100 + Math.random() * 100);
-          }
-        }, 1000);
-      });
-    }
-    
-    // Initialize all effects when the DOM is ready
-    function initialize() {
-      addGlitchEffect();
-      addMagicGlowEffect();
-      addTerminalEffect();
-      addParallaxEffect();
-      addNeonFlickerEffect();
-      
-      // Make collapsible elements work
-      if (typeof mw !== 'undefined' && typeof mw.hook !== 'undefined') {
-        mw.hook('wikipage.content').add(function($content) {
-          if (typeof mw.loader !== 'undefined') {
-            mw.loader.using('jquery.makeCollapsible', function() {
-              $content.find('.mw-collapsible').makeCollapsible();
-            });
-          }
-        });
+;(() => {
+    // Wait for document to be ready
+    document.addEventListener("DOMContentLoaded", () => {
+      // Add cyberpunk glitch effect to links on hover
+      const addGlitchEffect = () => {
+        const headings = document.querySelectorAll(".firstHeading, .sr-nexus-sitename")
+  
+        headings.forEach((heading) => {
+          heading.addEventListener("mouseover", () => {
+            heading.classList.add("glitch-effect")
+          })
+  
+          heading.addEventListener("mouseout", () => {
+            heading.classList.remove("glitch-effect")
+          })
+        })
       }
-    }
-    
-    // Run initialization when the document is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initialize);
-    } else {
-      initialize();
-    }
-  })();
+  
+      // Add responsive menu toggle for mobile
+      const addMobileNavToggle = () => {
+        const header = document.getElementById("sr-nexus-header")
+  
+        if (!header) return
+  
+        const navToggle = document.createElement("button")
+        navToggle.className = "sr-nexus-nav-toggle"
+        navToggle.setAttribute("aria-label", "Toggle navigation")
+        navToggle.innerHTML = "<span></span><span></span><span></span>"
+  
+        const navigation = document.getElementById("sr-nexus-navigation")
+  
+        if (navigation) {
+          header.insertBefore(navToggle, navigation)
+  
+          navToggle.addEventListener("click", () => {
+            navigation.classList.toggle("sr-nexus-nav-open")
+            navToggle.classList.toggle("sr-nexus-nav-toggle-open")
+  
+            const isExpanded = navigation.classList.contains("sr-nexus-nav-open")
+            navToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false")
+          })
+        }
+      }
+  
+      // Add cyberpunk cursor trail effect
+      const addCursorTrail = () => {
+        const trailContainer = document.createElement("div")
+        trailContainer.className = "sr-nexus-cursor-trail"
+        document.body.appendChild(trailContainer)
+  
+        const trail = []
+        const trailLength = 5
+  
+        for (let i = 0; i < trailLength; i++) {
+          const dot = document.createElement("div")
+          dot.className = "sr-nexus-cursor-dot"
+          trailContainer.appendChild(dot)
+          trail.push(dot)
+        }
+  
+        document.addEventListener("mousemove", (e) => {
+          const x = e.clientX
+          const y = e.clientY
+  
+          trail.forEach((dot, index) => {
+            setTimeout(() => {
+              dot.style.left = x + "px"
+              dot.style.top = y + "px"
+              dot.style.opacity = 1 - index / trailLength
+              dot.style.transform = `scale(${1 - index / trailLength})`
+            }, index * 50)
+          })
+        })
+      }
+  
+      // Initialize all features
+      const init = () => {
+        addGlitchEffect()
+        addMobileNavToggle()
+  
+        // Only add cursor trail on non-mobile devices
+        if (window.innerWidth > 768) {
+          addCursorTrail()
+        }
+  
+        // Add CSS class to body when JavaScript is enabled
+        document.body.classList.remove("client-nojs")
+        document.body.classList.add("client-js")
+      }
+  
+      // Run initialization
+      init()
+    })
+  })()
+  
   
