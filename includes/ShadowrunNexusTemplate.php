@@ -28,7 +28,7 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 */
 	public function execute() {
 		// For debugging - let's see what data we have available
-		// echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
+		echo '<pre>' . htmlspecialchars(print_r($this->data, true)) . '</pre>';
 
 		// Output the opening html element and head element
 		echo '<!DOCTYPE html>';
@@ -41,12 +41,7 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		echo $this->get( 'csslinks' );
 		echo $this->get( 'headlinks' );
 		
-		// Add any additional head items - with proper checks
-		if ( isset( $this->data['jsvarurl'] ) && $this->data['jsvarurl'] ) {
-			echo '<script src="' . htmlspecialchars( $this->data['jsvarurl'] ) . '"></script>';
-		}
-		
-		// Add site scripts
+		// Add site scripts - removed jsvarurl section that was causing warnings
 		echo $this->get( 'headscripts' );
 		
 		echo '</head>';
@@ -122,6 +117,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 								$this->html( 'bodycontent' );
 							} else {
 								echo '<div class="error">Page content not found</div>';
+								// For debugging - uncomment to see what data is available
+								echo '<pre>Available data keys: ' . htmlspecialchars(implode(', ', array_keys($this->data))) . '</pre>';
 							}
 							?>
 							<?php if ( isset( $this->data['printfooter'] ) && $this->data['printfooter'] ) { ?>

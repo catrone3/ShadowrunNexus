@@ -59,6 +59,9 @@ class SkinShadowrunNexus extends SkinTemplate {
 			$tpl->set( 'bodycontent', $this->getOutput()->mBodytext );
 		}
 		
+		// For debugging - log the available template data keys
+		error_log('ShadowrunNexus template data keys: ' . implode(', ', array_keys($tpl->data)));
+		
 		return $tpl;
 	}
 }
