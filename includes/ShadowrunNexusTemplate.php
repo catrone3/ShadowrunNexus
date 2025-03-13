@@ -41,6 +41,101 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		// Add site scripts
 		echo $this->get( 'headscripts' );
 		
+		// Add inline fallback CSS for testing
+		echo '<style>
+		/* Fallback CSS */
+		body {
+			background-color: #121212;
+			color: #e0e0e0;
+			font-family: sans-serif;
+		}
+		
+		.sr-nexus-wrapper {
+			max-width: 1400px;
+			margin: 0 auto;
+		}
+		
+		#sr-nexus-header {
+			background-color: #1e1e1e;
+			padding: 1rem;
+			border-bottom: 1px solid #333;
+		}
+		
+		.sr-nexus-header-inner {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.sr-nexus-logo a {
+			color: #00c8ff;
+			font-size: 1.5rem;
+			font-weight: bold;
+			text-decoration: none;
+		}
+		
+		#sr-nexus-navigation {
+			background-color: #1e1e1e;
+			padding: 0.5rem 1rem;
+		}
+		
+		.sr-nexus-nav-inner {
+			display: flex;
+			justify-content: space-between;
+		}
+		
+		.sr-nexus-nav-group {
+			display: flex;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.sr-nexus-nav-group li a {
+			color: #e0e0e0;
+			padding: 0.5rem 1rem;
+			text-decoration: none;
+		}
+		
+		.sr-nexus-nav-group li a:hover {
+			color: #00c8ff;
+		}
+		
+		#sr-nexus-content-wrapper {
+			display: flex;
+		}
+		
+		#sr-nexus-content {
+			flex: 1;
+			padding: 1.5rem;
+		}
+		
+		.sr-nexus-body {
+			background-color: #1e1e1e;
+			padding: 1.5rem;
+			border-radius: 4px;
+		}
+		
+		.firstHeading {
+			color: #00c8ff;
+			font-size: 2rem;
+			margin-top: 0;
+		}
+		
+		#sr-nexus-sidebar {
+			width: 250px;
+			background-color: #1e1e1e;
+			padding: 1.5rem 1rem;
+		}
+		
+		#sr-nexus-footer {
+			background-color: #1e1e1e;
+			padding: 1.5rem;
+			margin-top: 1.5rem;
+			color: #a0a0a0;
+		}
+		</style>';
+		
 		echo '</head>';
 		echo '<body class="' . htmlspecialchars( $this->get( 'bodyclass' ) ) . '">';
 		

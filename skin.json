@@ -29,14 +29,6 @@
     },
     "ResourceModules": {
         "skins.shadowrunnexus.styles": {
-            "class": "ResourceLoaderSkinModule",
-            "features": {
-                "normalize": true,
-                "elements": true,
-                "content": true,
-                "interface": true,
-                "logo": true
-            },
             "styles": [
                 "resources/main.css"
             ]

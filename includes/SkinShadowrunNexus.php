@@ -34,11 +34,17 @@ class SkinShadowrunNexus extends SkinTemplate {
 	 */
 	public function initPage( OutputPage $out ) {
 		parent::initPage( $out );
+		
+		// Add JavaScript
 		$out->addModules( 'skins.shadowrunnexus.js' );
+		
+		// Add CSS
 		$out->addModuleStyles( [
-			'mediawiki.skinning.interface',
 			'skins.shadowrunnexus.styles'
 		] );
+		
+		// For debugging - add inline CSS to verify CSS loading works
+		$out->addInlineStyle( 'body { border: 5px solid red !important; }' );
 	}
 
 	/**
@@ -46,6 +52,12 @@ class SkinShadowrunNexus extends SkinTemplate {
 	 */
 	function setupSkinUserCss( OutputPage $out ) {
 		parent::setupSkinUserCss( $out );
+		
+		// Add additional CSS modules if needed
+		$out->addModuleStyles( [
+			'mediawiki.skinning.interface',
+			'skins.shadowrunnexus.styles'
+		] );
 	}
 	
 	/**
