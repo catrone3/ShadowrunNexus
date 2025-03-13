@@ -1,0 +1,150 @@
+<div id="sr-nexus-wrapper" class="sr-nexus-wrapper">
+	<header id="sr-nexus-header">
+		<div class="sr-nexus-header-inner">
+			<div class="sr-nexus-logo-container">
+				{{#data-newtalk}}
+				<div class="sr-nexus-new-messages">{{{.}}}</div>
+				{{/data-newtalk}}
+				<div class="sr-nexus-logo">
+					<a href="{{link-mainpage}}">
+						<div class="sr-nexus-logo-image"></div>
+						<div class="sr-nexus-sitename">{{site-name}}</div>
+					</a>
+				</div>
+			</div>
+			<div class="sr-nexus-header-tools">
+				<div class="sr-nexus-search">
+					<form action="{{search-action}}" id="sr-nexus-searchform">
+						{{{html-search-input}}}
+						{{{html-search-button}}}
+					</form>
+				</div>
+				<div class="sr-nexus-user-tools">
+					{{> PersonalMenu}}
+				</div>
+			</div>
+		</div>
+		<nav id="sr-nexus-navigation">
+			<div class="sr-nexus-nav-inner">
+				<div class="sr-nexus-nav-main">
+					{{#content-navigation.MAIN}}
+					<ul class="{{class}}">
+						{{#items}}
+						<li class="{{class}}{{#active}} active{{/active}}">
+							<a href="{{href}}" {{#id}}id="{{id}}"{{/id}} {{#title}}title="{{title}}"{{/title}}>{{text}}</a>
+						</li>
+						{{/items}}
+					</ul>
+					{{/content-navigation.MAIN}}
+				</div>
+				<div class="sr-nexus-nav-actions">
+					{{#content-navigation.VIEWS}}
+					<ul class="{{class}}">
+						{{#items}}
+						<li class="{{class}}{{#active}} active{{/active}}">
+							<a href="{{href}}" {{#id}}id="{{id}}"{{/id}} {{#title}}title="{{title}}"{{/title}}>{{text}}</a>
+						</li>
+						{{/items}}
+					</ul>
+					{{/content-navigation.VIEWS}}
+					
+					{{#content-navigation.ACTIONS}}
+					<ul class="{{class}}">
+						{{#items}}
+						<li class="{{class}}{{#active}} active{{/active}}">
+							<a href="{{href}}" {{#id}}id="{{id}}"{{/id}} {{#title}}title="{{title}}"{{/title}}>{{text}}</a>
+						</li>
+						{{/items}}
+					</ul>
+					{{/content-navigation.ACTIONS}}
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div id="sr-nexus-content-wrapper">
+		<div id="sr-nexus-content" class="sr-nexus-content">
+			<div id="sr-nexus-body" class="sr-nexus-body">
+				{{#data-sitenotice}}
+				<div id="siteNotice">{{{.}}}</div>
+				{{/data-sitenotice}}
+				<div class="sr-nexus-page-header">
+					<h1 id="firstHeading" class="firstHeading">
+						{{{html-title}}}
+					</h1>
+					{{#data-subtitle}}
+					<div id="contentSub">{{{.}}}</div>
+					{{/data-subtitle}}
+					{{#data-undelete}}
+					<div id="contentSub2">{{{.}}}</div>
+					{{/data-undelete}}
+				</div>
+				<div id="bodyContent" class="sr-nexus-body-content">
+					{{{html-body-content}}}
+					{{#data-printfooter}}
+					<div class="printfooter">{{{.}}}</div>
+					{{/data-printfooter}}
+					{{#data-catlinks}}
+					{{{.}}}
+					{{/data-catlinks}}
+					{{#data-after-content}}
+					{{{.}}}
+					{{/data-after-content}}
+				</div>
+			</div>
+		</div>
+		<div id="sr-nexus-sidebar" class="sr-nexus-sidebar">
+			<div class="sr-nexus-sidebar-inner">
+				<div class="sr-nexus-sidebar-tools">
+					{{#data-portals}}
+					<div class="{{class}}" role="navigation" id="{{id}}" aria-labelledby="{{id}}-label">
+						<h3 id="{{id}}-label">{{label}}</h3>
+						<div class="sr-nexus-portal-content">
+							{{#html-items}}
+							{{{.}}}
+							{{/html-items}}
+							{{^html-items}}
+							<ul>
+								{{#items}}
+								{{{.}}}
+								{{/items}}
+							</ul>
+							{{/html-items}}
+						</div>
+					</div>
+					{{/data-portals}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer id="sr-nexus-footer" class="sr-nexus-footer">
+		<div class="sr-nexus-footer-inner">
+			<div class="sr-nexus-footer-info">
+				{{#data-footer.info}}
+				<ul id="sr-nexus-footer-info">
+					{{#array-items}}
+					<li id="{{id}}">{{{html}}}</li>
+					{{/array-items}}
+				</ul>
+				{{/data-footer.info}}
+			</div>
+			<div class="sr-nexus-footer-places">
+				{{#data-footer.places}}
+				<ul id="sr-nexus-footer-places">
+					{{#array-items}}
+					<li id="{{id}}">{{{html}}}</li>
+					{{/array-items}}
+				</ul>
+				{{/data-footer.places}}
+			</div>
+			<div class="sr-nexus-footer-icons">
+				{{#data-footer.icons}}
+				<div id="sr-nexus-footer-icons-{{name}}">
+					{{#array-items}}
+					<div>{{{html}}}</div>
+					{{/array-items}}
+				</div>
+				{{/data-footer.icons}}
+			</div>
+		</div>
+	</footer>
+</div>

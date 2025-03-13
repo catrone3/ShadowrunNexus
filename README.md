@@ -17,7 +17,7 @@ Shadowrun Nexus is a custom MediaWiki skin designed to capture the essence of th
 
 ## Installation
 
-1. Download and place the skin in your MediaWiki `skins` directory
+1. Download and place the skin in your MediaWiki `skins` directory (e.g., `skins/ShadowrunNexus`)
 2. Add the following line to your `LocalSettings.php`:
    ```php
    wfLoadSkin( 'ShadowrunNexus' );

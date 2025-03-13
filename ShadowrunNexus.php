@@ -11,26 +11,188 @@
  * @ingroup Skins
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( -1 );
-}
+namespace MediaWiki\Skins\ShadowrunNexus;
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Skins\SkinMustache;
+use OutputPage;
+use Skin;
 
 /**
- * SkinTemplate class for the ShadowrunNexus skin
+ * SkinMustache class for the ShadowrunNexus skin
  * @ingroup Skins
  */
-class SkinShadowrunNexus extends SkinTemplate {
-	/** @var string */
-	public $skinname = 'shadowrunnexus';
-	/** @var string */
-	public $stylename = 'ShadowrunNexus';
-	/** @var string */
-	public $template = 'ShadowrunNexusTemplate';
+class SkinShadowrunNexus extends SkinMustache {
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct( $options = [] ) {
+		$options['templateDirectory'] = __DIR__ . '/templates';
+		parent::__construct( $options );
+	}
 
 	/**
-	 * Add CSS via ResourceLoader
-	 *
-	 * @param OutputPage $out
+	 * @inheritDoc
+	 */
+	public function getTemplateData(): array {
+		$data = parent::getTemplateData();
+		
+		$contentNavigation = $this->buildContentNavigationUrls();
+		$portals = $this->buildSidebar();
+		
+		// Format and add vector-specific data
+		$data['data-portals'] = $this->getPortals( $portals );
+		$data['data-portals-first'] = reset( $data['data-portals'] );
+		$data['data-portals-rest'] = array_slice( $data['data-portals'], 1 );
+		
+		// Personal tools
+		$data['personal-menu'] = $this->getPersonalToolsForMustache( $this->buildPersonalUrls() );
+		
+		// Content navigation
+		$data['content-navigation'] = $this->getContentNavigationForMustache( $contentNavigation );
+		
+		// Site name
+		$data['site-name'] = $this->getConfig()->get( 'Sitename' );
+		
+		// Logo
+		$logos = $this->getLogoData();
+		$data['logo'] = $logos['1x'];
+		$data['logo-tagline'] = $this->msg( 'tagline' )->text();
+		
+		// Search
+		$data['search-action'] = $this->getSearchURL();
+		$data['search-input-id'] = 'sr-nexus-searchInput';
+		$data['search-button-id'] = 'sr-nexus-searchButton';
+		
+		return $data;
+	}
+	
+	/**
+	 * Get personal tools for Mustache template
+	 * @param array $personalTools
+	 * @return array
+	 */
+	protected function getPersonalToolsForMustache( $personalTools ) {
+		$items = [];
+		foreach ( $personalTools as $key => $item ) {
+			// Skip redundant logout link
+			if ( $key === 'logout' ) {
+				continue;
+			}
+			
+			$items[] = [
+				'id' => $key,
+				'href' => $item['href'] ?? null,
+				'text' => $item['text'] ?? null,
+				'class' => $item['class'] ?? null,
+				'active' => $item['active'] ?? false,
+				'icon' => $item['icon'] ?? null,
+			];
+		}
+		
+		return [
+			'id' => 'p-personal',
+			'class' => 'sr-nexus-personal-tools',
+			'html-items' => '',
+			'html-tooltip' => '',
+			'html-after-portal' => '',
+			'items' => $items
+		];
+	}
+	
+	/**
+	 * Get content navigation for Mustache template
+	 * @param array $contentNavigation
+	 * @return array
+	 */
+	protected function getContentNavigationForMustache( $contentNavigation ) {
+		$result = [];
+		
+		foreach ( $contentNavigation as $category => $items ) {
+			$formattedItems = [];
+			
+			foreach ( $items as $key => $item ) {
+				$formattedItems[] = [
+					'id' => $key,
+					'href' => $item['href'] ?? null,
+					'text' => $item['text'] ?? null,
+					'class' => $item['class'] ?? null,
+					'active' => $item['active'] ?? false,
+					'icon' => $item['icon'] ?? null,
+				];
+			}
+			
+			$result[$category] = [
+				'id' => 'p-' . $category,
+				'class' => 'sr-nexus-nav-' . strtolower($category),
+				'html-items' => '',
+				'html-tooltip' => '',
+				'html-after-portal' => '',
+				'items' => $formattedItems
+			];
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Get portals for Mustache template
+	 * @param array $sidebar
+	 * @return array
+	 */
+	protected function getPortals( $sidebar ) {
+		$portals = [];
+		
+		// Render portals
+		foreach ( $sidebar as $name => $content ) {
+			if ( $content === false ) {
+				continue;
+			}
+			
+			// Numeric strings gets an integer when set as key, cast back
+			$name = (string)$name;
+			
+			$portal = [
+				'name' => $name,
+				'id' => Skin::makeIdFromName( $name ),
+				'class' => 'sr-nexus-portal',
+				'html-items' => '',
+				'html-tooltip' => '',
+				'html-after-portal' => '',
+				'items' => []
+			];
+			
+			// Message that is used as the header of the portal
+			$msgObj = $this->msg( $name );
+			$portal['label'] = $msgObj->exists() ? $msgObj->text() : $name;
+			
+			if ( is_array( $content ) ) {
+				foreach ( $content as $key => $val ) {
+					$portal['items'][] = $this->makeListItem( $key, $val );
+				}
+			} else {
+				$portal['html-items'] = $content;
+			}
+			
+			$portals[] = $portal;
+		}
+		
+		return $portals;
+	}
+	
+	/**
+	 * Get search URL
+	 * @return string
+	 */
+	protected function getSearchURL() {
+		$config = $this->getConfig();
+		$target = $config->get( 'Script' );
+		
+		return wfAppendQuery( $target, [ 'title' => SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey() ] );
+	}
+	
+	/**
+	 * @inheritDoc
 	 */
 	public function initPage( OutputPage $out ) {
 		parent::initPage( $out );
@@ -39,261 +201,5 @@ class SkinShadowrunNexus extends SkinTemplate {
 			'mediawiki.skinning.interface',
 			'skins.shadowrunnexus.styles'
 		] );
-	}
-
-	/**
-	 * @param OutputPage $out
-	 */
-	function setupSkinUserCss( OutputPage $out ) {
-		parent::setupSkinUserCss( $out );
-	}
-}
-
-/**
- * BaseTemplate class for ShadowrunNexus skin
- * @ingroup Skins
- */
-class ShadowrunNexusTemplate extends BaseTemplate {
-	/**
-	 * Outputs the entire contents of the page
-	 */
-	public function execute() {
-		$this->html( 'headelement' );
-		?>
-		<div id="sr-nexus-wrapper" class="sr-nexus-wrapper">
-			<header id="sr-nexus-header">
-				<div class="sr-nexus-header-inner">
-					<div class="sr-nexus-logo-container">
-						<?php
-						if ( $this->data['newtalk'] ) {
-							?>
-							<div class="sr-nexus-new-messages"><?php $this->html( 'newtalk' ); ?></div>
-							<?php
-						}
-						?>
-						<div class="sr-nexus-logo">
-							<a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-								<div class="sr-nexus-logo-image"></div>
-								<div class="sr-nexus-sitename"><?php $this->msg( 'sitetitle' ); ?></div>
-							</a>
-						</div>
-					</div>
-					<div class="sr-nexus-header-tools">
-						<div class="sr-nexus-search">
-							<form action="<?php $this->text( 'wgScript' ); ?>" id="sr-nexus-searchform">
-								<?php
-								echo $this->makeSearchInput( [ 'id' => 'sr-nexus-searchInput', 'class' => 'sr-nexus-search-input' ] );
-								echo $this->makeSearchButton( 'go', [ 'id' => 'sr-nexus-searchButton', 'class' => 'sr-nexus-search-button' ] );
-								?>
-							</form>
-						</div>
-						<div class="sr-nexus-user-tools">
-							<?php $this->renderPersonalTools(); ?>
-						</div>
-					</div>
-				</div>
-				<nav id="sr-nexus-navigation">
-					<div class="sr-nexus-nav-inner">
-						<div class="sr-nexus-nav-main">
-							<?php $this->renderNavigation( 'MAIN' ); ?>
-						</div>
-						<div class="sr-nexus-nav-actions">
-							<?php $this->renderNavigation( [ 'VIEWS', 'ACTIONS' ] ); ?>
-						</div>
-					</div>
-				</nav>
-			</header>
-			<div id="sr-nexus-content-wrapper">
-				<div id="sr-nexus-content" class="sr-nexus-content">
-					<div id="sr-nexus-body" class="sr-nexus-body">
-						<?php if ( $this->data['sitenotice'] ) { ?>
-							<div id="siteNotice"><?php $this->html( 'sitenotice' ); ?></div>
-						<?php } ?>
-						<div class="sr-nexus-page-header">
-							<h1 id="firstHeading" class="firstHeading">
-								<?php $this->html( 'title' ); ?>
-							</h1>
-							<?php if ( $this->data['subtitle'] ) { ?>
-								<div id="contentSub"><?php $this->html( 'subtitle' ); ?></div>
-							<?php } ?>
-							<?php if ( $this->data['undelete'] ) { ?>
-								<div id="contentSub2"><?php $this->html( 'undelete' ); ?></div>
-							<?php } ?>
-						</div>
-						<div id="bodyContent" class="sr-nexus-body-content">
-							<?php $this->html( 'bodycontent' ); ?>
-							<?php if ( $this->data['printfooter'] ) { ?>
-								<div class="printfooter"><?php $this->html( 'printfooter' ); ?></div>
-							<?php } ?>
-							<?php if ( $this->data['catlinks'] ) { ?>
-								<?php $this->html( 'catlinks' ); ?>
-							<?php } ?>
-							<?php if ( $this->data['dataAfterContent'] ) { ?>
-								<?php $this->html( 'dataAfterContent' ); ?>
-							<?php } ?>
-						</div>
-					</div>
-				</div>
-				<div id="sr-nexus-sidebar" class="sr-nexus-sidebar">
-					<div class="sr-nexus-sidebar-inner">
-						<div class="sr-nexus-sidebar-tools">
-							<?php $this->renderPortals( $this->data['sidebar'] ); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-			<footer id="sr-nexus-footer" class="sr-nexus-footer">
-				<div class="sr-nexus-footer-inner">
-					<div class="sr-nexus-footer-info">
-						<?php foreach ( $this->getFooterLinks() as $category => $links ) { ?>
-							<ul id="sr-nexus-footer-<?php echo $category; ?>">
-								<?php foreach ( $links as $link ) { ?>
-									<li id="sr-nexus-footer-<?php echo $link; ?>"><?php $this->html( $link ); ?></li>
-								<?php } ?>
-							</ul>
-						<?php } ?>
-					</div>
-					<div class="sr-nexus-footer-icons">
-						<?php foreach ( $this->getFooterIcons( 'icononly' ) as $blockName => $footerIcons ) { ?>
-							<div id="sr-nexus-footer-<?php echo htmlspecialchars( $blockName ); ?>">
-								<?php foreach ( $footerIcons as $icon ) { ?>
-									<?php echo $this->getSkin()->makeFooterIcon( $icon ); ?>
-								<?php } ?>
-							</div>
-						<?php } ?>
-					</div>
-				</div>
-			</footer>
-		</div>
-		<?php $this->printTrail(); ?>
-		</body>
-		</html>
-		<?php
-	}
-
-	/**
-	 * Render a series of portals
-	 *
-	 * @param array $portals
-	 */
-	protected function renderPortals( $portals ) {
-		// Force the rendering of the following portals
-		if ( !isset( $portals['SEARCH'] ) ) {
-			$portals['SEARCH'] = true;
-		}
-		if ( !isset( $portals['TOOLBOX'] ) ) {
-			$portals['TOOLBOX'] = true;
-		}
-		if ( !isset( $portals['LANGUAGES'] ) ) {
-			$portals['LANGUAGES'] = true;
-		}
-
-		foreach ( $portals as $name => $content ) {
-			if ( $content === false ) {
-				continue;
-			}
-
-			// Numeric strings gets an integer when set as key, cast back
-			$name = (string)$name;
-
-			switch ( $name ) {
-				case 'SEARCH':
-					break;
-				case 'TOOLBOX':
-					$this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'sr-nexus-toolbox' );
-					break;
-				case 'LANGUAGES':
-					if ( $this->data['language_urls'] !== false ) {
-						$this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages', 'sr-nexus-languages' );
-					}
-					break;
-				default:
-					$this->renderPortal( $name, $content );
-					break;
-			}
-		}
-	}
-
-	/**
-	 * @param string $name
-	 * @param array $content
-	 * @param null|string $msg
-	 * @param null|string $hook
-	 */
-	protected function renderPortal( $name, $content, $msg = null, $hook = null ) {
-		if ( $msg === null ) {
-			$msg = $name;
-		}
-		$msgObj = wfMessage( $msg );
-		$labelId = Sanitizer::escapeIdForAttribute( "p-$name-label" );
-		?>
-		<div class="sr-nexus-portal" role="navigation" id="<?php echo Sanitizer::escapeIdForAttribute( "p-$name" ); ?>"
-			<?php echo Linker::tooltip( 'p-' . $name ); ?> aria-labelledby="<?php echo $labelId; ?>">
-			<h3 id="<?php echo $labelId; ?>"><?php echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h3>
-			<div class="sr-nexus-portal-content">
-				<?php if ( is_array( $content ) ) { ?>
-					<ul>
-						<?php foreach ( $content as $key => $val ) { ?>
-							<?php echo $this->makeListItem( $key, $val ); ?>
-						<?php } ?>
-						<?php if ( $hook !== null ) {
-							Hooks::run( $hook, [ &$this, true ] );
-						} ?>
-					</ul>
-				<?php } else { ?>
-					<?php echo $content; ?>
-				<?php } ?>
-			</div>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Render personal tools
-	 */
-	protected function renderPersonalTools() {
-		?>
-		<div class="sr-nexus-personal-tools">
-			<ul>
-				<?php foreach ( $this->getPersonalTools() as $key => $item ) { ?>
-					<?php echo $this->makeListItem( $key, $item ); ?>
-				<?php } ?>
-			</ul>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Render navigation
-	 *
-	 * @param string|array $navGroups
-	 */
-	protected function renderNavigation( $navGroups ) {
-		if ( !is_array( $navGroups ) ) {
-			$navGroups = [ $navGroups ];
-		}
-
-		foreach ( $navGroups as $navGroup ) {
-			if ( isset( $this->data['nav_urls'][$navGroup] ) ) {
-				?>
-				<ul class="sr-nexus-nav-group sr-nexus-nav-<?php echo strtolower( $navGroup ); ?>">
-					<?php foreach ( $this->data['nav_urls'][$navGroup] as $navItem ) { ?>
-						<?php if ( isset( $navItem['text'] ) ) { ?>
-							<li<?php echo $navItem['attributes'] ?>><a href="<?php echo htmlspecialchars( $navItem['href'] ) ?>"<?php echo $navItem['key'] ?>><?php echo htmlspecialchars( $navItem['text'] ) ?></a></li>
-						<?php } ?>
-					<?php } ?>
-				</ul>
-				<?php
-			} else {
-				$navigation = $this->data['sidebar'][$navGroup] ?? [];
-				?>
-				<ul class="sr-nexus-nav-group sr-nexus-nav-<?php echo strtolower( $navGroup ); ?>">
-					<?php foreach ( $navigation as $navItem ) { ?>
-						<?php echo $this->makeListItem( $navItem['id'] ?? null, $navItem ); ?>
-					<?php } ?>
-				</ul>
-				<?php
-			}
-		}
 	}
 }

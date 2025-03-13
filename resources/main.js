@@ -61,18 +61,19 @@
     
     // Add parallax effect to magic rune decorations
     function addParallaxEffect() {
-      const runeElements = document.querySelectorAll('.sr-nexus-body::before, .sr-nexus-body::after');
+      const body = document.querySelector('.sr-nexus-body');
+      if (!body) return;
       
       document.addEventListener('mousemove', (e) => {
         const x = e.clientX / window.innerWidth;
         const y = e.clientY / window.innerHeight;
         
-        runeElements.forEach(element => {
-          const offsetX = (x - 0.5) * 20;
-          const offsetY = (y - 0.5) * 20;
-          
-          element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-        });
+        const offsetX = (x - 0.5) * 20;
+        const offsetY = (y - 0.5) * 20;
+        
+        // Use CSS custom properties to apply the transform
+        body.style.setProperty('--rune-offset-x', `${offsetX}px`);
+        body.style.setProperty('--rune-offset-y', `${offsetY}px`);
       });
     }
     

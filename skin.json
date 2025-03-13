@@ -2,7 +2,7 @@
     "name": "ShadowrunNexus",
     "version": "1.0.0",
     "author": [
-        "catrone3"
+        "Your Name"
     ],
     "url": "https://www.mediawiki.org/wiki/Skin:ShadowrunNexus",
     "descriptionmsg": "shadowrunnexus-desc",
@@ -10,21 +10,15 @@
     "license-name": "GPL-2.0-or-later",
     "type": "skin",
     "requires": {
-        "MediaWiki": ">= 1.35.0"
+        "MediaWiki": ">= 1.39.0"
     },
     "ValidSkinNames": {
         "shadowrunnexus": {
-            "class": "SkinShadowrunNexus",
+            "class": "MediaWiki\\Skins\\ShadowrunNexus\\SkinShadowrunNexus",
             "args": [
                 {
                     "name": "shadowrunnexus",
-                    "styles": [
-                        "mediawiki.skinning.interface",
-                        "skins.shadowrunnexus.styles"
-                    ],
-                    "scripts": [
-                        "skins.shadowrunnexus.js"
-                    ]
+                    "responsive": true
                 }
             ]
         }
@@ -62,9 +56,8 @@
         "localBasePath": "",
         "remoteSkinPath": "ShadowrunNexus"
     },
-    "AutoloadClasses": {
-        "SkinShadowrunNexus": "ShadowrunNexus.php",
-        "ShadowrunNexusTemplate": "ShadowrunNexus.php"
+    "AutoloadNamespaces": {
+        "MediaWiki\\Skins\\ShadowrunNexus\\": "includes/"
     },
     "manifest_version": 2
 }
