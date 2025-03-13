@@ -13,47 +13,16 @@
 
 namespace MediaWiki\Skins\ShadowrunNexus;
 
-use MediaWiki\MediaWikiServices;
-use OutputPage;
-use SkinTemplate;
-
-/**
- * SkinTemplate class for the ShadowrunNexus skin
- * @ingroup Skins
- */
-class SkinShadowrunNexus extends SkinTemplate {
-	/** @var string */
-	public $skinname = 'shadowrunnexus';
-	/** @var string */
-	public $template = 'MediaWiki\\Skins\\ShadowrunNexus\\ShadowrunNexusTemplate';
-
-	/**
-	 * Add CSS via ResourceLoader
-	 *
-	 * @param OutputPage $out
-	 */
-	public function initPage( OutputPage $out ) {
-		parent::initPage( $out );
-		$out->addModules( 'skins.shadowrunnexus.js' );
-		$out->addModuleStyles( [
-			'mediawiki.skinning.interface',
-			'skins.shadowrunnexus.styles'
-		] );
-	}
-
-	/**
-	 * @param OutputPage $out
-	 */
-	function setupSkinUserCss( OutputPage $out ) {
-		parent::setupSkinUserCss( $out );
-	}
-}
+use BaseTemplate;
+use Hooks;
+use Linker;
+use Sanitizer;
 
 /**
  * BaseTemplate class for ShadowrunNexus skin
  * @ingroup Skins
  */
-class ShadowrunNexusTemplate extends \BaseTemplate {
+class ShadowrunNexusTemplate extends BaseTemplate {
 	/**
 	 * Outputs the entire contents of the page
 	 */
@@ -225,10 +194,10 @@ class ShadowrunNexusTemplate extends \BaseTemplate {
 			$msg = $name;
 		}
 		$msgObj = wfMessage( $msg );
-		$labelId = \Sanitizer::escapeIdForAttribute( "p-$name-label" );
+		$labelId = Sanitizer::escapeIdForAttribute( "p-$name-label" );
 		?>
-		<div class="sr-nexus-portal" role="navigation" id="<?php echo \Sanitizer::escapeIdForAttribute( "p-$name" ); ?>"
-			<?php echo \Linker::tooltip( 'p-' . $name ); ?> aria-labelledby="<?php echo $labelId; ?>">
+		<div class="sr-nexus-portal" role="navigation" id="<?php echo Sanitizer::escapeIdForAttribute( "p-$name" ); ?>"
+			<?php echo Linker::tooltip( 'p-' . $name ); ?> aria-labelledby="<?php echo $labelId; ?>">
 			<h3 id="<?php echo $labelId; ?>"><?php echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h3>
 			<div class="sr-nexus-portal-content">
 				<?php if ( is_array( $content ) ) { ?>
@@ -237,7 +206,7 @@ class ShadowrunNexusTemplate extends \BaseTemplate {
 							<?php echo $this->makeListItem( $key, $val ); ?>
 						<?php } ?>
 						<?php if ( $hook !== null ) {
-							\Hooks::run( $hook, [ &$this, true ] );
+							Hooks::run( $hook, [ &$this, true ] );
 						} ?>
 					</ul>
 				<?php } else { ?>
