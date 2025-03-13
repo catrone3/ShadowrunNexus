@@ -14,7 +14,7 @@
 namespace MediaWiki\Skins\ShadowrunNexus;
 
 use BaseTemplate;
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use Linker;
 use Sanitizer;
 
@@ -167,7 +167,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 					</div>
 					<div class="sr-nexus-footer-icons">
 						<?php 
-						$footerIcons = $this->getFooterIcons( 'icononly' );
+						// Use the skin's footer icons method instead of deprecated getFooterIcons
+						$footerIcons = $this->getSkin()->getFooterIcons();
 						if ( is_array( $footerIcons ) ) {
 							foreach ( $footerIcons as $blockName => $icons ) {
 								if ( is_array( $icons ) ) {
@@ -189,7 +190,12 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 		<?php 
 		// Output the closing body and html elements
 		echo $this->get( 'debughtml' );
-		echo $this->get( 'reporttime' );
+		
+		// Use custom code for reporttime instead of deprecated method
+		if ( isset( $this->data['reporttime'] ) ) {
+			echo '<div id="reporttime">' . $this->data['reporttime'] . '</div>';
+		}
+		
 		echo $this->get( 'bottomscripts' );
 		echo '</body>';
 		echo '</html>';
@@ -201,8 +207,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 	 * @return array
 	 */
 	protected function getToolbox() {
-    return $this->data['sidebar']['TOOLBOX'] ?? [];
-}
+		return $this->data['sidebar']['TOOLBOX'] ?? [];
+	}
 
 	/**
 	 * Render a series of portals
@@ -270,7 +276,8 @@ class ShadowrunNexusTemplate extends BaseTemplate {
 							<?php echo $this->makeListItem( $key, $val ); ?>
 						<?php } ?>
 						<?php if ( $hook !== null ) {
-							Hooks::run( $hook, [ &$this, true ] );
+							// Use HookContainer instead of deprecated Hooks::run
+							MediaWikiServices::getInstance()->getHookContainer()->run( $hook, [ &$this, true ] );
 						} ?>
 					</ul>
 				<?php } else { ?>
