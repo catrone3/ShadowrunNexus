@@ -86,6 +86,7 @@ a.new[href]:hover,
     color: #ff9999 !important;
 }
 
+/* Super aggressive targeting for edit section brackets */
 h1 .mw-editsection,
 h2 .mw-editsection,
 h3 .mw-editsection,
@@ -205,39 +206,47 @@ h6 .mw-editsection a:hover,
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Ko-fi support link styling */
+/* Update the Ko-fi support link styling with !important flags */
 .sr-nexus-kofi {
-    text-align: center;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--sr-border);
-    font-size: 0.9rem;
+    text-align: center !important;
+    margin-top: 0.5rem !important;
+    padding-top: 0.5rem !important;
+    border-top: 1px solid var(--sr-border) !important;
+    font-size: 0.9rem !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.sr-nexus-kofi>div {
+    max-width: 150px !important;
+    margin: 0 auto !important;
+    display: block !important;
 }
 
 .sr-nexus-kofi a {
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex !important;
+    align-items: center !important;
     background-color: #13c3ff !important;
     color: #fff !important;
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    font-size: 0.9rem;
-    max-width: 200px;
-    margin: 0 auto;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease !important;
+    font-size: 0.9rem !important;
+    width: auto !important;
+    text-decoration: none !important;
 }
 
 .sr-nexus-kofi a:hover {
     background-color: #00b1e6 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
 .sr-nexus-kofi-icon {
-    margin-right: 0.4rem;
-    width: 16px;
-    height: 16px;
+    margin-right: 0.4rem !important;
+    width: 16px !important;
+    height: 16px !important;
 }
 
 
